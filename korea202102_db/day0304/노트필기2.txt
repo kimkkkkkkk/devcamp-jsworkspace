@@ -1,0 +1,93 @@
+SQL> --트랜잭션이란? transaction
+SQL> -- 세부업무 (DML)가 모두 ~성공해야 전체를 성공으로 간주하는 노리적 업무수행 단위를 말함
+SQL> --우리가 접속하자 마자 즉 세션이 연결되자 마자 이미 트랜잭션이 가동되고 있는 것이다.
+SQL> --하지만 아직 한번도 DML 업무를 수행한 적이 없으므로, 이 트랜잭션은 세부업무가 0개 인 것이다..
+SQL> select * from dept;
+
+    DEPTNO DNAME                        LOC                                     
+---------- ---------------------------- --------------------------              
+        10 ACCOUNTING                   NEW YORK                                
+        20 RESEARCH                     DALLAS                                  
+        30 SALES                        CHICAGO                                 
+        40 OPERATIONS                   BOSTON                                  
+
+SQL> --트랜잭션의 대상은 insert , update, delete 이다.
+SQL> delete from dept
+  2  where deptno=30;
+
+1 row deleted.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME                        LOC                                     
+---------- ---------------------------- --------------------------              
+        10 ACCOUNTING                   NEW YORK                                
+        20 RESEARCH                     DALLAS                                  
+        40 OPERATIONS                   BOSTON                                  
+
+SQL> --rollback :트랜잭션내의 모든 DML을 실패로 간주하여 되돌려 놓음
+SQL> rollback;
+
+Rollback complete.
+
+SQL> --즉 무효화 (어차피 모두 성공을 못할 바엔 처음부터 없었던 것으로 간주)
+SQL> --rollback이 실행된 이후엔 다시 새로운 트랜잭션이 가동됨 .
+SQL> select * from dept;
+
+    DEPTNO DNAME                        LOC                                     
+---------- ---------------------------- --------------------------              
+        10 ACCOUNTING                   NEW YORK                                
+        20 RESEARCH                     DALLAS                                  
+        30 SALES                        CHICAGO                                 
+        40 OPERATIONS                   BOSTON                                  
+
+SQL> update dept set dname='영업' where deptno=30;
+
+1 row updated.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME                        LOC                                     
+---------- ---------------------------- --------------------------              
+        10 ACCOUNTING                   NEW YORK                                
+        20 RESEARCH                     DALLAS                                  
+        30 영업                         CHICAGO                                 
+        40 OPERATIONS                   BOSTON                                  
+
+SQL> update dept set dname='연구' where deptno=20;
+
+1 row updated.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME                        LOC                                     
+---------- ---------------------------- --------------------------              
+        10 ACCOUNTING                   NEW YORK                                
+        20 연구                         DALLAS                                  
+        30 영업                         CHICAGO                                 
+        40 OPERATIONS                   BOSTON                                  
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> --지금까지 수행했던 업무를 전부 망한것으로 간주 .. 따라서 전체를 실패로 간주 !!
+SQL> --그와 동시에 새로운 트랜잭션이 시작 된 것임..
+SQL> select * from dept
+  2  select * from dept;
+select * from dept
+*
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select * from dept;
+
+    DEPTNO DNAME                        LOC                                     
+---------- ---------------------------- --------------------------              
+        10 ACCOUNTING                   NEW YORK                                
+        20 RESEARCH                     DALLAS                                  
+        30 SALES                        CHICAGO                                 
+        40 OPERATIONS                   BOSTON                                  
+
+SQL> spool off

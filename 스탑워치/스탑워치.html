@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+ #wrapper{
+    margin : auto;
+    width: 600px;
+    text-align: center;
+    border: 2px solid red;
+    padding-top: 20px;
+}
+ #wrapper input{
+    font-size: 30px;
+    width: 50px; 
+    text-align: right;  
+}
+</style>
+<script> 
+var t_hour;
+var t_min; 
+var t_sec;
+
+var hour=0; 
+var min=0;
+var sec=0; 
+var st;
+   
+function getZeroString(n){       
+var result;
+  if(n<10){
+        result= "0"+n ; 
+     }else{
+        result=n;
+   }
+      return result;
+}
+function init(){
+    t_hour=document.getElementById("t_hour");
+    t_min=document.getElementById("t_min");
+    t_sec=document.getElementById("t_sec"); 
+        
+    t_hour.value="00";
+    t_min.value="00";
+    t_sec.value="00";
+}   
+function CountUp(){
+        
+    sec++; 
+    t_sec.value =  getZeroString(sec); 
+
+     if(sec>=60){ 
+           sec=0; 
+           min++;
+    
+            t_sec.value=sec;
+            t_min.value = getZeroString(min);
+      if(min>=60){
+            min=0;
+            hour++;
+
+             t_min.value = getZeroString(min);
+             t_hour.value = getZeroString(hour);
+        }            
+    }
+}
+function start(){ 
+   st = setInterval("CountUp()",1); 
+}
+
+function pause(){
+   clearInterval(st);
+}
+
+window.addEventListener("load",function(){
+   init();
+});
+
+</script>
+</head>
+<body>
+<div  id ="wrapper">
+    <input type="text" id="t_hour" value="">시 
+    <input type="text" id="t_min" value="">분 
+    <input type="text" id="t_sec">초
+    <p>    
+        <button onClick="CountUp()">CountUp</button>
+        <button onClick="start()">start</button>
+        <button onClick="pause()">pause</button>
+</div>
+</body>
+</html>

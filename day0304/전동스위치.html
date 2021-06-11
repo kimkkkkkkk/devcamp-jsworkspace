@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    #wrapper{
+        background: url(../image/room.jpg);
+        width: 900px;
+        height: 622px;
+        background-size: 900px 622px;
+        margin: auto;
+        position: relative; /*자식 때문에  포지션 줘야함  자식은 wrapper img*/
+    }
+    #wrapper img{
+        width: 35px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+    }
+    #surface{
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        opacity: 0.8;
+
+    }
+
+    </style>
+    <script>
+        var op=0.8;
+        var swImg="switch_on.png"// 스위치 이미지 변수선언
+        var flag=false // true of false 값을 대입할 변수 선언
+                                // false 일때는 불끄는 효과, true 일때는 불키는 효과
+        
+                                //스위치를 켜고 끄는 함수
+    function turn(){
+        // 투명막을 제어 : 문서내의 surface라 불리는 요소의 스타일 중 
+        // opacity 값을 불투명 0과(켜기),0.8(끄기)
+        op= (flag)?  0:0.8 ; // 참 실행 : 거짓 실행 켜 (0) , 끄 (0.8)
+        document.querySelector("#surface").style.opacity=op;
+        flag=!flag; // 기존 값을 뒤집자!! 뒤집으려면 논리값이 최고!! 느낌표 뒤집는 역할
+       
+        //스위치 이미지도 제어 ( hint : 이 코드 역시 두개의 이미지가 나오고 말고의 문제
+        // 흑백논리 .. 따라서 역시나 삼항연산자 쓰면 좋을 것 같음 ^^)
+        //결론 : 이미지명은 결정되지 않은 변수로 가자!!
+        // on 켜기 , off 끄기  플래그가 참일때는 켜기 폴스일 경우 꺼지기
+      swImg = (flag)? "switch_on.png":"switch_off.png";// 삼항연산자에게 맡김 너가 아무때나 온 오프 해줘
+      document.querySelector("img").src="../image/"+swImg;
+      flag=!flag; // 기존 값을 뒤집자!! 뒤집으려면 논리값이 최고!! 
+                    // 느낌표 뒤집는 역할 업무끝내고 뒤집기
+    }
+
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="surface"></div>
+        <img src="../image/switch_off.png" alt=""onClick="turn()">
+
+    </div>
+</body>
+</html>

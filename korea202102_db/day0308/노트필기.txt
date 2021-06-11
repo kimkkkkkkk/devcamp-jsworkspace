@@ -1,0 +1,173 @@
+SQL> ed
+SP2-0107: Nothing to save.
+SQL> select;
+select
+     *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  DDL, DML, DCL 
+  2  DML
+  3  - query ì•ˆì— queryë¬¸ (=sub query)
+  4  - avg, wum, min, max, count
+  5* DDL
+SQL> --Å×ÀÌºíÀ» Àß ¸¸µé¾î º¸±â (°áÁ¡ÀÌ ¾ø´Â µ¥ÀÌÅÍ¸¸ ¹Þ¾ÆµéÀÌ±â)
+SQL> --Å×ÀÌºí Á¤ÀÇ½Ã, ¿Ã¹Ù¸¥ µ¥ÀÌÅÍ Áï ¹«°á¼º( °áÇÔÀÌ ¾ø´Â)ÀÇ µ¥ÀÌÅÍ¸¸À»
+SQL> --¹Þ±â À§ÇÑ Á¶°ÇÀ» ÇÔ²² ÁöÁ¤ÇÒ ¼ö ÀÖ´Ù.. ÀÌ·¯ÇÑ Á¶°ÇµéÀ» °¡¸®ÄÑ
+SQL> --Á¦¾àÁ¶°Ç (Constraint Á¶°Ç) ÀÌ¶ó ÇÏ¸ç ´ÙÀ½°ú °°Àº À¯ÇüÀÇ Á¦¾àÁ¶°ÇÀ» ¾Ë¾ÆµÎÀÚ
+SQL> --Not null, Ubique, primary key, foreign key , check , default, index
+SQL> select table_name from user_tables;
+
+TABLE_NAME                                                                      
+------------------------------------------------------------                    
+MEMBER                                                                          
+DEPT                                                                            
+EMP                                                                             
+
+SQL> --±âÁ¸¿¡ Á¦¾àÁ¶°ÇÀ» »ç¿ëÇÏÁö ¾ÊÀº Å×ÀÌºíµé¿¡ ¾î¶°ÇÑ  ¹®Á¦°¡ ¹ß»ýÇÏ´ÂÁö
+SQL> --¾Ë¾Æº¸ÀÚ
+SQL> select * from member;
+
+NAME                                            AGE PHONE                       
+---------------------------------------- ---------- --------------------------  
+dog                                               3 017                         
+dog                                               3 017                         
+dog                                               3 017                         
+
+SQL> show user
+USER is "ADAM"
+SQL> -- ·¹ÄÚµå Áö¿ì±â
+SQL> delete from member;
+
+3 rows deleted.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> --Ä¿¹ÔÀ» ÇßÀ¸¹Ç·Î, º¹¼ö ÇÒ ¼ö ¾ø´Â Æ®·£Àè¼ÇÀÇ È®Á¤ÀÌ ÀÌ·ç¾îÁü
+SQL> rollback;
+
+Rollback complete.
+
+SQL> --¶Ç »õ·Î¿î Æ®·£Àè¼ÇÀÌ ½ÃÀÛµÊ..
+SQL> insert into member(name, phone, age)
+  2  values ('¹èÆ®¸Ç', '010' ,35);
+
+1 row created.
+
+SQL> select * from member;
+
+NAME                                            AGE PHONE                       
+---------------------------------------- ---------- --------------------------  
+¹èÆ®¸Ç                                           35 010                         
+
+SQL> insert into member(name, phone, age) values('¹èÆ®¸Ç', '010', 35);
+
+1 row created.
+
+SQL> select * from member;
+
+NAME                                            AGE PHONE                       
+---------------------------------------- ---------- --------------------------  
+¹èÆ®¸Ç                                           35 010                         
+¹èÆ®¸Ç                                           35 010                         
+
+SQL> update member set name='batman' where phone='010';
+
+2 rows updated.
+
+SQL> select * from member;
+
+NAME                                            AGE PHONE                       
+---------------------------------------- ---------- --------------------------  
+batman                                           35 010                         
+batman                                           35 010                         
+
+SQL> --°á·Ð: Å×ÀÌºí Á¤ÀÇ½Ã Áßº¹µÇÁö ¾Ê´Â µ¥ÀÌÅÍ¸¸ ¹Þ¾ÆµéÀÏ ¼ö ÀÖ´Â Á¦ÇÑ»çÇ×À»
+SQL> --µÎÀÚ
+SQL> member2¶ó´Â Å×ÀÌºíÀ» »ý¼º½Ã unique Á¦¾àÁ¶ÀüÀ» ºÎ¿©ÇØº¸ÀÚ
+SP2-0734: unknown command beginning "member2¶ó..." - rest of line ignored.
+SQL> --member2¶ó´Â Å×ÀÌºíÀ» »ý¼º½Ã unique Á¦¾àÁ¶ÀüÀ» ºÎ¿©ÇØº¸ÀÚ
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table member2(
+  2   name varchar(20)
+  3  , phone varchar(13) unique
+  4  , age number
+  5* )
+SQL> /
+
+Table created.
+
+SQL> insert into member2(name, phone, age) values ('batman','010',38);
+
+1 row created.
+
+SQL> insert into member2(name, phone, age) values ('batman','010',38);
+insert into member2(name, phone, age) values ('batman','010',38)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (ADAM.SYS_C007001) violated 
+
+
+SQL> select * from member2;
+
+NAME                                     PHONE                             AGE  
+---------------------------------------- -------------------------- ----------  
+batman                                   010                                38  
+
+SQL> insert into member2(name, age) values ('batman',38);
+
+1 row created.
+
+SQL> insert into member2(name, age) values ('batman',38);
+
+1 row created.
+
+SQL> select * from member2;
+
+NAME                                     PHONE                             AGE  
+---------------------------------------- -------------------------- ----------  
+batman                                   010                                38  
+batman                                                                      38  
+batman                                                                      38  
+
+SQL> --unique Á¦¾àÁ¶°ÇÀ» null À» Çã¿ëÇØ¹ö¸°´Ù .....
+SQL> --µû¶ó¼­ member3¸¦ »ý¼ºÇÏ¸é¼­ unique ÇÏ¸ç³Ê ³ÎÀ» Çã¿ëÇÏÁö ¾Ê´Â Á¦¾àÁ¶°ÇÀ» °ÉÀÚ
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table member3(
+  2   name varchar(20)
+  3  , phone varchar(13) unique not null
+  4  , age number
+  5* )
+SQL> /
+
+Table created.
+
+SQL> insert into member3(name, phone, age) values ('superman' ,37);
+insert into member3(name, phone, age) values ('superman' ,37)
+                                      *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> insert into member3(name, phone, age) values ('superman' ,'010', 37);
+
+1 row created.
+
+SQL> insert into member3(name, phone, age) values ('superman' ,'010', 37);
+insert into member3(name, phone, age) values ('superman' ,'010', 37)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (ADAM.SYS_C007003) violated 
+
+
+SQL> spool off

@@ -1,0 +1,378 @@
+SQL> ----현 접속자 확인
+SQL> SQL> show user
+SP2-0734: unknown command beginning "SQL> show ..." - rest of line ignored.
+SQL> USER is "SYSTEM"
+SP2-0734: unknown command beginning "USER is "S..." - rest of line ignored.
+SQL> SQL> --현재 시스템에 존재하는 사용자 조회 ( 딕셔너리 조회)
+SP2-0734: unknown command beginning "SQL> --현..." - rest of line ignored.
+SQL> SQL> --딕셔너리 중  dba_ 로 시작하는 테이블들을 조회하자
+SP2-0734: unknown command beginning "SQL> --딕..." - rest of line ignored.
+SP2-0044: For a list of known commands enter HELP
+and to leave enter EXIT.
+SQL> SQL> --현재 접속자가 관리작 계정이므로...
+SP2-0734: unknown command beginning "SQL> --현..." - rest of line ignored.
+SQL> SQL> select username from dba_users;
+SP2-0734: unknown command beginning "SQL> selec..." - rest of line ignored.
+SQL> select username from dba_users;
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+SYS                                                                             
+SYSTEM                                                                          
+ANONYMOUS                                                                       
+FRONT                                                                           
+ADAM                                                                            
+APEX_PUBLIC_USER                                                                
+FLOWS_FILES                                                                     
+APEX_040000                                                                     
+OUTLN                                                                           
+DIP                                                                             
+ORACLE_OCM                                                                      
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+XS$NULL                                                                         
+MDSYS                                                                           
+CTXSYS                                                                          
+DBSNMP                                                                          
+XDB                                                                             
+APPQOSSYS                                                                       
+HR                                                                              
+
+18 rows selected.
+
+SQL> --Adam으로 접속을 변경하자
+SQL> conn adam/1234
+ERROR:
+ORA-01045: user ADAM lacks CREATE SESSION privilege; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> show user;
+USER is ""
+SQL> conn system/1234
+Connected.
+SQL> show user
+USER is "SYSTEM"
+SQL> --adam에게 필요한 권한을 부여하자
+SQL> grant create session to adam;
+
+Grant succeeded.
+
+SQL> --adam으로 접속을 변경하자
+SQL> conn adam/1234
+Connected.
+SQL> --접속을 했으나 테이블에 대한 권한이 없으므로, 시스템으로 가서
+SQL> --권한을 부여하자
+SQL> conn system/1234
+Connected.
+SQL> grant create table to adam;
+
+Grant succeeded.
+
+SQL> --adam으로 접속 변경하여 테이블 생성해보자
+SQL> create table member(
+  2  name varchar(20);
+name varchar(20)
+               *
+ERROR at line 2:
+ORA-00907: missing right parenthesis 
+
+
+SQL> conn adam/1234
+Connected.
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table member(
+  2  name varchar(20)
+  3  , age number
+  4  , phone varchar(13)
+  5* )
+SQL> /
+
+Table created.
+
+SQL> show user
+USER is "ADAM"
+SQL> --생성된 테이블에 데이터 넣기
+SQL> insert into member(name, age, phone) values('홍길동','23', '010');
+
+1 row created.
+
+SQL> --조회하기
+SQL> select name, age, phone from member;
+
+NAME                                            AGE PHONE                       
+---------------------------------------- ---------- --------------------------  
+홍길동                                           23 010                         
+
+SQL> -- DBMS만이 이해할 수 있는 언어인 SQL문은 업무유형에 따른 종류가 3가지 있다
+SQL> --DDL, DML, DCL
+SQL> --DDL(Database Definition Language) : 데이터 정의어 (생성, 변경, 제거)
+SQL> --DML(Data Manipulation Language) : 데이터 조작어 (테이블의 데이터를 대상으로 넣고, 수정, 삭제)
+SQL> --DCL(Database Control Language) : 데이터베이스 제어어 (권한 주기, 뺏기)
+SQL> --select 문은 조회
+SQL> --관리자 계정으로 들어가서 (미진씨 질문) 사용자가 어떤 테이블 스페이스를 사용중인지
+SQL> --알아보자
+SQL> conn system/1234
+Connected.
+SQL> show user
+USER is "SYSTEM"
+SQL> --select 컬럼명? from dba_users;
+SQL> --해당 테이블이 어떤 컬럼 구조를 보유하고 있는지 조회 (설명하란 명령어-desc)
+SQL> desc dba_users;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ USERNAME                                  NOT NULL VARCHAR2(30)
+ USER_ID                                   NOT NULL NUMBER
+ PASSWORD                                           VARCHAR2(30)
+ ACCOUNT_STATUS                            NOT NULL VARCHAR2(32)
+ LOCK_DATE                                          DATE
+ EXPIRY_DATE                                        DATE
+ DEFAULT_TABLESPACE                        NOT NULL VARCHAR2(30)
+ TEMPORARY_TABLESPACE                      NOT NULL VARCHAR2(30)
+ CREATED                                   NOT NULL DATE
+ PROFILE                                   NOT NULL VARCHAR2(30)
+ INITIAL_RSRC_CONSUMER_GROUP                        VARCHAR2(30)
+ EXTERNAL_NAME                                      VARCHAR2(4000)
+ PASSWORD_VERSIONS                                  VARCHAR2(8)
+ EDITIONS_ENABLED                                   VARCHAR2(1)
+ AUTHENTICATION_TYPE                                VARCHAR2(8)
+
+SQL> select username, default_tablespace from dba_users;
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+DEFAULT_TABLESPACE                                                              
+------------------------------------------------------------                    
+SYS                                                                             
+SYSTEM                                                                          
+                                                                                
+SYSTEM                                                                          
+SYSTEM                                                                          
+                                                                                
+ANONYMOUS                                                                       
+SYSAUX                                                                          
+                                                                                
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+DEFAULT_TABLESPACE                                                              
+------------------------------------------------------------                    
+FRONT                                                                           
+FRONTSPACE                                                                      
+                                                                                
+ADAM                                                                            
+JAVASPACE                                                                       
+                                                                                
+APEX_PUBLIC_USER                                                                
+SYSTEM                                                                          
+                                                                                
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+DEFAULT_TABLESPACE                                                              
+------------------------------------------------------------                    
+FLOWS_FILES                                                                     
+SYSAUX                                                                          
+                                                                                
+APEX_040000                                                                     
+SYSAUX                                                                          
+                                                                                
+OUTLN                                                                           
+SYSTEM                                                                          
+                                                                                
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+DEFAULT_TABLESPACE                                                              
+------------------------------------------------------------                    
+DIP                                                                             
+SYSTEM                                                                          
+                                                                                
+ORACLE_OCM                                                                      
+SYSTEM                                                                          
+                                                                                
+XS$NULL                                                                         
+SYSTEM                                                                          
+                                                                                
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+DEFAULT_TABLESPACE                                                              
+------------------------------------------------------------                    
+MDSYS                                                                           
+SYSAUX                                                                          
+                                                                                
+CTXSYS                                                                          
+SYSAUX                                                                          
+                                                                                
+DBSNMP                                                                          
+SYSAUX                                                                          
+                                                                                
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+DEFAULT_TABLESPACE                                                              
+------------------------------------------------------------                    
+XDB                                                                             
+SYSAUX                                                                          
+                                                                                
+APPQOSSYS                                                                       
+SYSAUX                                                                          
+                                                                                
+HR                                                                              
+USERS                                                                           
+                                                                                
+
+18 rows selected.
+
+SQL> --SQLplus 명령어 중 표의 너비, 데이터 출력 버퍼의 크기를 늘리는 명령어
+SQL> set line 200
+SQL> select username, default_tablespace from dva_users;
+select username, default_tablespace from dva_users
+                                         *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> select username, default_tablespace from dba_users;
+
+USERNAME                                                     DEFAULT_TABLESPACE                                                                                                                         
+------------------------------------------------------------ ------------------------------------------------------------                                                                               
+SYS                                                          SYSTEM                                                                                                                                     
+SYSTEM                                                       SYSTEM                                                                                                                                     
+ANONYMOUS                                                    SYSAUX                                                                                                                                     
+FRONT                                                        FRONTSPACE                                                                                                                                 
+ADAM                                                         JAVASPACE                                                                                                                                  
+APEX_PUBLIC_USER                                             SYSTEM                                                                                                                                     
+FLOWS_FILES                                                  SYSAUX                                                                                                                                     
+APEX_040000                                                  SYSAUX                                                                                                                                     
+OUTLN                                                        SYSTEM                                                                                                                                     
+DIP                                                          SYSTEM                                                                                                                                     
+ORACLE_OCM                                                   SYSTEM                                                                                                                                     
+
+USERNAME                                                     DEFAULT_TABLESPACE                                                                                                                         
+------------------------------------------------------------ ------------------------------------------------------------                                                                               
+XS$NULL                                                      SYSTEM                                                                                                                                     
+MDSYS                                                        SYSAUX                                                                                                                                     
+CTXSYS                                                       SYSAUX                                                                                                                                     
+DBSNMP                                                       SYSAUX                                                                                                                                     
+XDB                                                          SYSAUX                                                                                                                                     
+APPQOSSYS                                                    SYSAUX                                                                                                                                     
+HR                                                           USERS                                                                                                                                      
+
+18 rows selected.
+
+SQL> show user
+USER is "SYSTEM"
+SQL> --DDL 데이터베이스 정의어 (찬생- create, 변경 alter,  죽음 drop )
+SQL> create table test(
+  2  name varchar (10)
+  3  );
+
+Table created.
+
+SQL> desc test;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ NAME                                                                                                                       VARCHAR2(10)
+
+SQL> --구조의 변경이므로 DDL중 Alter 를 사용
+SQL> alter table test modify name varchar(30);
+
+Table altered.
+
+SQL> --구조가 잘 변경되었는지 확인
+SQL> desc test;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ NAME                                                                                                                       VARCHAR2(30)
+
+SQL> --존재 제거 DDL중 drop
+SQL> drop table test;
+
+Table dropped.
+
+SQL> --DML : 데이터 조작 Insert(넣기), select(조회), update(데이터수정),delete(데이터 삭제)
+SQL> show user
+USER is "SYSTEM"
+SQL> --실습을 위해 접속계정을 adam으로..
+SQL> conn adam/1234
+Connected.
+SQL> select name , age, phone from member;
+
+NAME                                            AGE PHONE                                                                                                                                               
+---------------------------------------- ---------- --------------------------                                                                                                                          
+홍길동                                           23 010                                                                                                                                                 
+
+SQL> update member set name='임꺽정';
+
+1 row updated.
+
+SQL> select name from member;
+
+NAME                                                                                                                                                                                                    
+----------------------------------------                                                                                                                                                                
+임꺽정                                                                                                                                                                                                  
+
+SQL> select * from member;
+
+NAME                                            AGE PHONE                                                                                                                                               
+---------------------------------------- ---------- --------------------------                                                                                                                          
+임꺽정                                           23 010                                                                                                                                                 
+
+SQL> --수정할 컬럼이 복수개인 경우 ..
+SQL> update member set name='BTS', age=22, phone='011';
+
+1 row updated.
+
+SQL> select * from member;
+
+NAME                                            AGE PHONE                                                                                                                                               
+---------------------------------------- ---------- --------------------------                                                                                                                          
+BTS                                              22 011                                                                                                                                                 
+
+SQL> --DDL 데이터 삭제
+SQL> delete from member;
+
+1 row deleted.
+
+SQL> select * from member;
+
+no rows selected
+
+SQL> insert into member(phone, age, name) values('017',3,'강아지');
+
+1 row created.
+
+SQL> insert into member(phone, age, name) values('017',3,'늑대');
+
+1 row created.
+
+SQL> insert into member(phone, age, name) values('017',3,'고양이');
+
+1 row created.
+
+SQL> select * from member;
+
+NAME                                            AGE PHONE                                                                                                                                               
+---------------------------------------- ---------- --------------------------                                                                                                                          
+강아지                                            3 017                                                                                                                                                 
+늑대                                              3 017                                                                                                                                                 
+고양이                                            3 017                                                                                                                                                 
+
+SQL> update member set name='dog';
+
+3 rows updated.
+
+SQL> select * from member;
+
+NAME                                            AGE PHONE                                                                                                                                               
+---------------------------------------- ---------- --------------------------                                                                                                                          
+dog                                               3 017                                                                                                                                                 
+dog                                               3 017                                                                                                                                                 
+dog                                               3 017                                                                                                                                                 
+
+SQL> spool off

@@ -1,0 +1,48 @@
+<script>
+    /*과일명 10개를 메모리에 올려보자 (기존의 변수 사용법으로...)*/
+    var a="사과";
+    var b ="딸기";
+    var c ="체리";
+    var d ="망고";
+    var e ="샤인머스켓";
+    var f ="파인애플";
+    var g ="복숭아";
+    var h ="오렌지";
+    var i ="수박";
+    var j ="배";
+    // document.write로 과일들을 출력하시오, (본인기준으로 속상하지 않게)
+
+    document.write(a+"<br>");
+    document.write(b+"<br>");
+    document.write(c+"<br>");
+    document.write(d+"<br>");
+    document.write(e+"<br>");
+    document.write(f+"<br>");
+    document.write(g+"<br>");
+    document.write(h+"<br>");
+    document.write(i+"<br>");
+    document.write(j+"<br>");
+    /* 
+    데이터에 대해 일일히 변수명을 할당하는 방식은, 대량의 데이터를 처리할때는
+    비효율적인.. 해결책? 현실에서 줄을 세워서 업무를 처리하면 각 주체의 이름을
+    일일히 알필요가 없듯, 전산에서도 메모리에 데이터를 올릴때 데이터의 줄을 세워
+    올리는 기법이 지원된다..(배열이라 한다 array)
+    */
+   // 동물 이름 10개를 메모리에 올리되,
+   var ani = new Array(); // 배열 선언! 즉 집합을 선언
+   ani[0]="호랑이";
+   ani[1]="사자";
+   ani[2]="토끼";
+   ani[3]="강아지";
+   ani[4]="고양이";
+   ani[5]="표범";
+   ani[6]="사슴";
+   ani[7]="독수리";
+   ani[8]="늑대";
+   ani[9]="사막여우";
+
+   // 모든 동물 출력
+   for(var i=0;i<=10;i++){
+    document.write(ani[i]+"<br>");
+   }
+    </script>

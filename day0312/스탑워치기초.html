@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    #wrapper{
+        margin : auto;
+        width: 600px;
+        text-align: center;
+        border: 2px solid red;
+        padding-top: 20px;
+    }
+    #wrapper input{
+        font-size: 30px;
+        width: 50px;
+        
+    }
+
+</style>
+<script>
+    // 프로그램 가동과 동시에 , 초기화 시킬 작업이 있다면 init()에서 해보자
+    var t_hour;
+    var t_min; // 숫자 자체가 아니라 input 박스이다!!
+    var t_sec;
+
+    var hour=0; // 시간을 담을 전역변수(숫자이므로 초기화 하자)
+    var min=0; // 분을 담을 전역변수(숫자이므로 초기화 하자)
+    var sec=0; // 초를 담을 전역변수 (숫자이므로 초기화 하자)
+    var st;
+
+    // 0에 대한 처리를 해주는 함수
+    function getZeroString(n){ //7이 들어올 경우?
+        //이 함수를 호출하는 자가  n에 숫자를 넘기되,
+        //10보다 작으면 앞에0문자를 추가하고, 아니면 숫자만 반환하자 ★ 
+        var result;
+        if(n<10){
+            result= "0"+n ; // 어느 한쪽이 문자이면 + 연산자는 연결자가 되어버린다.. 변수로받자
+        }else{
+            result=n;
+        }
+            return result;
+    }
+
+    function init(){
+        t_hour=document.getElementById("t_hour");
+        t_min=document.getElementById("t_min");
+        t_sec=document.getElementById("t_sec"); // 전역변수로 올려줘서 앞에 var 지움
+    
+        //분과 초를 0으로 초기화
+        t_hour.value="00";
+        t_min.value="00";
+        t_sec.value="00";
+    }
+    //초를 증가시키자!!
+    function CountUp(){
+        // var sec=0; // 버튼을 누를떄마다 태어남 숫자가 쌓이려면 전역 즉 밖으로 나가야함
+        sec++; 
+        t_sec.value =  getZeroString(sec);
+
+        
+        // 증가된 값, 버튼이 누르면 값이 증가해야되니 이것은 전역
+        // 초에 출력될 데이터가 10보다 작은 경우엔 앞에 0을 붙여야 한다..
+        //따라서 문자취급해서 출력해야 함..★
+     
+       // 아래의 두줄은 초가 60이상일때만 동작해야한다
+       if(sec>=60){ 
+           sec=0; //숙제  여기서 또 뭘 처리해야 함 
+           min++;
+    
+            t_sec.value=sec;
+            t_min.value = getZeroString(min);
+      if(min>=60){
+            min=0;
+            hour++;
+
+             t_min.value = getZeroString(min);
+            t_hour.value = getZeroString(hour);
+
+        }
+            
+       }
+    }
+
+    function start(){ 
+        st = setInterval("CountUp()",1); 
+    }
+
+    function pause(){
+        clearInterval(st);
+   }
+
+    window.addEventListener("load",function(){
+        init();
+    });
+
+</script>
+</head>
+<body>
+<div  id ="wrapper">
+
+    <input type="text" id="t_hour" value="">시 <!--min 옆에 밸류 값들어갈 것-->
+    <input type="text" id="t_min" value="">분 <!--min 옆에 밸류 값들어갈 것-->
+    <input type="text" id="t_sec">초
+    <p>
+        
+        <button onClick="CountUp()">CountUp</button>
+        <button onClick="start()">start</button>
+        <button onClick="pause()">pause</button>
+</div>
+</body>
+</html>

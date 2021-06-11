@@ -1,0 +1,122 @@
+SQL> show user
+USER is "ADAM"
+SQL> --정규화에 의해 물리적으로 분리된 테이블을 마치 하나의 테이블
+SQL> --처럼 조회하는 select 쿼리문을 join이라 한다.
+SQL> set line 200
+SQL> select * from dept;
+
+    DEPTNO DNAME                        LOC                                                                                                                                                             
+---------- ---------------------------- --------------------------                                                                                                                                      
+        10 ACCOUNTING                   NEW YORK                                                                                                                                                        
+        20 RESEARCH                     DALLAS                                                                                                                                                          
+        30 SALES                        CHICAGO                                                                                                                                                         
+        40 OPERATIONS                   BOSTON                                                                                                                                                          
+
+SQL> select *from emp;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                 
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                 
+      7369 SMITH                CLERK                    7902 80/12/17        800                    20                                                                                                 
+      7499 ALLEN                SALESMAN                 7698 81/02/20       1600        300         30                                                                                                 
+      7521 WARD                 SALESMAN                 7698 81/02/22       1250        500         30                                                                                                 
+      7566 JONES                MANAGER                  7839 81/04/02       2975                    20                                                                                                 
+      7654 MARTIN               SALESMAN                 7698 81/09/28       1250       1400         30                                                                                                 
+      7698 BLAKE                MANAGER                  7839 81/05/01       2850                    30                                                                                                 
+      7782 CLARK                MANAGER                  7839 81/06/09       2450                    10                                                                                                 
+      7788 SCOTT                ANALYST                  7566 87/04/19       3000                    20                                                                                                 
+      7839 KING                 PRESIDENT                     81/11/17       5000                    10                                                                                                 
+      7844 TURNER               SALESMAN                 7698 81/09/08       1500          0         30                                                                                                 
+      7876 ADAMS                CLERK                    7788 87/05/23       1100                    20                                                                                                 
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                 
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                 
+      7900 JAMES                CLERK                    7698 81/12/03        950                    30                                                                                                 
+      7902 FORD                 ANALYST                  7566 81/12/03       3000                    20                                                                                                 
+      7934 MILLER               CLERK                    7782 82/01/23       1300                    10                                                                                                 
+
+14 rows selected.
+
+SQL> select ename, dname
+  2  from emp e, dept d
+  3  where e.deptno=d.deptno
+  4  and e.dept no = (select deptno from emp where sal =(select min(sal)from emp));
+and e.dept no = (select deptno from emp where sal =(select min(sal)from emp))
+           *
+ERROR at line 4:
+ORA-00920: invalid relational operator 
+
+
+SQL> select dname, ename, sal
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno
+  4  and  sal = ( select min(sal) from emp where ename like '%K%');
+
+DNAME                        ENAME                       SAL                                                                                                                                            
+---------------------------- -------------------- ----------                                                                                                                                            
+ACCOUNTING                   CLARK                      2450                                                                                                                                            
+
+SQL> select ename, dname
+  2  from emp e,  dept d
+  3  where e.deptno=d.deptno
+  4  and e.deptno = ( select deptno from emp sal=(select min(sal) from emp));
+and e.deptno = ( select deptno from emp sal=(select min(sal) from emp))
+                                           *
+ERROR at line 4:
+ORA-00907: missing right parenthesis 
+
+
+SQL> select dname,ename,hiredate
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno
+  4  and hiredate = ( select min(hiredate) from emp where comm is null);
+
+DNAME                        ENAME                HIREDATE                                                                                                                                              
+---------------------------- -------------------- --------                                                                                                                                              
+RESEARCH                     SMITH                80/12/17                                                                                                                                              
+
+SQL> select ename,dname
+  2  from emp e, dept d
+  3  where e.dept=d.deptno
+  4  and e.depno= (select deptno from dept where loc = 'CHIACAGO');
+and e.depno= (select deptno from dept where loc = 'CHIACAGO')
+    *
+ERROR at line 4:
+ORA-00904: "E"."DEPNO": invalid identifier 
+
+
+SQL> select ename,dname
+  2  from emp e, dept d
+  3  where e.dept=d.deptno
+  4  and e.deptno= (select deptno from dept where loc = 'CHICAGO');
+where e.dept=d.deptno
+      *
+ERROR at line 3:
+ORA-00904: "E"."DEPT": invalid identifier 
+
+
+SQL> select ename,dname
+  2  from emp e, dept d
+  3  where e.deptno =d.deptno
+  4  and e.deptno= (select deptno from dept where loc = 'CHIACAGO');
+
+no rows selected
+
+SQL> select ename, dname
+  2  from emp e, dept d
+  3  where e.deptno=d.deptno
+  4  and e.deptno = (select deptno from dept where loc='CHICAGO')
+  5  /
+
+ENAME                DNAME                                                                                                                                                                              
+-------------------- ----------------------------                                                                                                                                                       
+ALLEN                SALES                                                                                                                                                                              
+WARD                 SALES                                                                                                                                                                              
+MARTIN               SALES                                                                                                                                                                              
+BLAKE                SALES                                                                                                                                                                              
+TURNER               SALES                                                                                                                                                                              
+JAMES                SALES                                                                                                                                                                              
+
+6 rows selected.
+
+SQL> 
+SQL> spool off

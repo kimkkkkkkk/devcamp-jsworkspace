@@ -1,0 +1,22 @@
+<script>
+class Cicorita{
+ /*클래스란 변수와 함수를 하나의 단위 묶을 수 있는 코드 단위*/
+
+// 치코리타가 가질 수 있는 속성은 변수로 표현
+    constructor(x,y){
+        this.x=x; // 클래스를 가리키는게 아니라 거푸집으로 부터 태어날 미래의 자기자신을 가리킴
+                    //  인스턴스가 나의 x 나의 y  치코리타 안에 이것들이 다 있는 것
+        this.y=y;
+        this.img=document.createElement("img");
+        this.img.src="../image/ci.png";
+        this.img.style.position = "absolute";
+        this.img.style.left=this.x+"px";
+        this.img.style.top=this.y+"px";
+        this.img.style.width=100+"px";
+        //body에 부착
+        document.body.appendChild(this.img);
+    }
+
+ // 치코리타가 행동할 수 있는 동작은 함수로 표현
+}
+</script>

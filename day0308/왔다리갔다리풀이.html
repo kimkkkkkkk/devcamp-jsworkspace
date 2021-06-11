@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    #ball{
+        width: 100px;
+        position: absolute;
+        left: 0px;
+        top:150px;
+    }
+</style>
+<script>
+var x=0; // 공의 좌표
+var step =0; // 증가할지 ,감소할지를 결정할 변수
+var flag = true;
+var st  ;
+function move(){
+    //문서내의 ball 이라는 요소의 style중 left값을 증가시키다가 500도달하면
+    //감소시키고, 다시 0에 도달하면 증가시킨다.
+     step = (flag)? 10 :-10;  // (500에 도달)? -10:10;  500조건으로 따지지 말구
+     // 나중에 판단 falg 라는 변수로 제어하자
+    x= x+step; // step 이 변수  
+    document.getElementById("ball").style.left=x+"px";
+    document.querySelector("h1").innerText=x;
+
+    //queryselector 써도됨 근데 위에 쟤는 아이디가 명시되어있는게 아니기 떄문에 #뻄
+    //개발자는 flag만 만지면, 공의 방향이 바뀔 수 있다 flag로 제어하기
+    flag = (x>=500 || x<=0)? !flag : flag; 
+    //증가 값이 홀수인 경우 조건에 맞지 앉을 수도 있다
+   // flag= (x==500)? false:((x==0)? true:flag); -> 다른 사람이 한 것
+
+}
+
+function auto(){
+
+     var k = 5;
+    //사용자 대신, 컴퓨터가 수동함수를 호출해주면 그게 자동이다!!
+    //따라서 언제나 수동로직을 먼저 작성해야한다!!
+    st = setInterval("move()",1); // 1 /1000초 단위가지 표현가능 , 가리키려고 변수 줌
+}
+
+function stop(){
+    //setInterval을 멈추기 위해서는 clearInterval(현재실행중 interval)
+    //이용
+    clearInterval(st);
+}
+</script>
+</head>
+<body>
+    <button onClick="move()">움직이기</button>
+    <button onClick="auto()">자동</button>
+    <button onClick="stop()">멈춤</button>
+    <h1>0</h1>
+    <img id="ball" src="../image/hero.png" alt="">   
+</body>
+</html>

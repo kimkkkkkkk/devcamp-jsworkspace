@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+body{margin: 0px;}
+.wrapper{
+    width: 100%;
+    height: 700px;
+   /* border: 1px solid rgb(151, 255, 215); */
+   background-color:  rgb(116, 255, 169);
+   position: relative;
+}
+
+#cico{
+    width:80px;
+
+}
+</style>
+<script>
+var cico; // 다른 함수들에서 접근하기 위해
+var targetX = 0; //치코리타가 도달할 목표지점의 x좌표
+var targetY= 0; //치코리타가 도달할 목표지점의 y좌표  치코리타는 이쪾으로 엄청 뛰어갈 것이다
+var a = 0.1; //비율계수 숫자가 클수록 가파짐
+function init(){
+    cico = document.getElementById("cico"); // cico 전역변수로 빠질 예정 ,  전역변수로 나갔으니 var 지워주기
+    cico.style.position="absolute";
+    cico.style.left=100+"px";
+    cico.style.top=50+"px";
+
+}
+function getPos(){
+    targetX = event.clientX;  //  원래 var x =  이었음
+    targetY = event.clientY;
+    console.log("x좌표=", targetX, "y좌표=", targetY); // , 넘는 이유 데이터 끼리는 충돌 
+    // //구해진 마우스 좌표를 이용하여, 치코리타의 위치로 사용해본다!!
+    // cico.style.left=x+"px";
+     // cico.style.top=y+"px";
+        
+}
+function move(){   //치코리타는 엄청 움직이려고 할 것이다 
+    cico.style.left=parseFloat(cico.style.left)+a*(targetX-parseFloat(cico.style.left))+"px";
+    cico.style.top=parseFloat(cico.style.top)+a*(targetY-parseFloat(cico.style.top))+"px";
+       // 원래 이거였는데 맨위에 전역변수로 target xy 주어서 cico.style.top=y+"px";
+}
+
+window.addEventListener("load",function(){
+    init();
+    setInterval("move()",10);// 원래 setInterval("getPos()",1);//
+});
+</script>
+</head>
+<body onMouseMove="getPos()"> <!-- 마우스가 올라갈 대상이 있어야 한다   "getPos()" -> move로 바꿈 -->
+    <!-- 여긴 먹나? 글씨위에 올라감 ///////onMousedow 와 onMousemove-->
+<div class="wrapper">
+<img src="../image/ci.png" id= "cico">
+</div>
+</body>
+</html>

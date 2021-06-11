@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<script>
+
+    /*document.write()는 문자열에 태그를 넣어 출력하는 방식이었음
+    하지만, 이 방식만 있는게 아니라 , createElement()를 이용할 수 있다*/
+    window.addEventListener("load",function(){
+        createTable();
+    });
+    function createTable(){
+        //문서내에 없었던 태그를 create 처리하여 생성하는 방법으로 테이블
+        //을 구성해 본다.
+       
+        //몇층의 몇호수로 생성할지 프롬프트를 이용하여 입력받아보자
+       var f = parseInt (prompt("원하는 층수를 입력하세요"));
+       var j = parseInt (prompt("원하는 호수를 입력하세요"));
+       var b= parseInt (prompt("콘크리트 두께를 입력하세요"));
+
+       //이 건축물의 콘크리트두께도 입력받아 처리하세요
+
+        var table = document.createElement("table");//<table></table>을 코딩한 것 과 같다
+       
+        table.style.width=300+"px";
+        table.border=b+"px ";
+        for(var a = f; a>=1;a--){
+            //tr생성
+            var tr= document.createElement("tr")// <tr></tr>과 같다
+            //tr생성
+             var tr = document.createElement("tr"); // <tr></tr>과 같다
+        for(var i=1;i<=j;i++){
+            var td = document.createElement("td");
+            td.innerText=a+"0"+i+"호"; // <td></td>과 같다
+            tr.appendChild(td); // tr에 td를 붙여라
+        
+        }
+        table.appendChild(tr); ////tr을 table에 부착
+    }
+     
+
+        document.body.appendChild(table);// body에 부착 
+
+    }
+</script>
+</head>
+<body>
+    
+</body>
+</html>
+
+<!-- var tr = document.createElement("tr"); // <tr></tr>과 같다 
+        table.appendChild(tr); ////tr을 table에 부착
+        for(var i=1;i<=3;i++){
+            var td = document.createElement("td");
+        td.innerText="10"+i+"호"; // <td></td>과 같다
+        tr.appendChild(td); // tr에 td를 붙여라
+위에처럼 해도되고 이렇게 해도되고 달라진 부분은 tr 내린고 -->

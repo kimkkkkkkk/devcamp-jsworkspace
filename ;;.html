@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <style>
+        html,body,input {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="list-box">
+        <h1>To Do List</h1>
+
+        <div class="write-box">
+            <!-- to do 내용을 입력해서 동적 추가되는 텍스트 입력창과 버튼이 있는 곳 -->
+            <input type="text" placeholder="입력">
+            <button type="button" id="btnAdd">추가</button>
+        </div>
+
+    <table class="list-table">
+        <colgroup>      <!--colspan 인데 하나로 묶는 역할 그룹지다-->
+            <col width="15%">
+            <col width="85%">
+        </colgroup>
+
+            <thead>
+                <!-- <thead> 요소는 <table> 요소의 자식 요소로써, 
+                반드시 모든 <caption>, <colgroup> 요소 다음에 위치해야 합니다.  
+                반드시 하나 이상의 <tr> 요소를 포함하고 있어야 합니다.-->
+                <tr>
+                    <!-- 제목 줄 -->
+                    <th>확인</th>
+                    <th>목록</th>
+                </tr>
+            </thead>
+
+             <tbody id="listBody"> <!--body content를 하나로 묶는 요소-->
+                <!-- tbody요소는 table 요소의 자식 요소로써, 
+                반드시 모든 caption, colgroup, thead 요소 다음에 위치해야 합니다.
+                또한, tbody요소는 반드시 하나 이상의 tr 요소를 포함하고 있어야 합니다.  -->
+                    <tr>
+                        <td><input type="checkbox" class="btn-chk"></td>
+                        <td>javascript 공부하기</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="btn-chk"></td>
+                        <td>다이어트 좀 제발</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="btn-chk"></td>
+                        <td>영찬이와 데이트</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" class="btn-chk"></td>
+                        <td>shopping 꿀잼</td>
+                    </tr>
+             </tbody>
+        </table>
+        <div class="btn-area">
+            <!-- 삭제 기능 -->
+            <button type="button" id="DeleteSel">선택삭제</button>
+            <button type="button" id="btnDelLast">마지막 항목 삭제</button>
+            <button type="button" id="btnDelAll">전체 삭제</button>
+        </div>
+    </div>
+</body>
+</html>

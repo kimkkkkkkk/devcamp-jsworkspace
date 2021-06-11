@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<script>
+    //애니메이션 효과를 내기 위해서는 이미지를 교체..
+    var n=1;
+    function next(){
+        n = n+1;
+        //문서내의 이미지의 src의 값을 변하게 하자!! 여기서 "img" 는 밑에 있는 img 
+        // html에서 우리 .img , #img {} 했던거임 대신 1개였을때만 
+        document.querySelector("img").src="../image/image/hero/image" +n+".png";
+    }
+</script>
+</head>
+<body>
+    <button onClick="next()">애니메이션 동작</button>
+    <img src="../image/image/hero/image1.png"alt="">
+</body>
+</html>

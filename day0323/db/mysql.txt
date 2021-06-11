@@ -1,0 +1,61 @@
+mySQL
+
+---------------------------------------------------------------------------------------------------------------
+
+1) show databases;
+   데이터베이스 목록 보기
+
+2) use study;
+   데이터베이스 선택
+
+3) show tables;
+   보유테이블 목록 보기
+
+4) 우편번호를 넣을 테이블 생성
+create table post(
+   zipcode  varchar(10)  
+ , sido  varchar(30)
+ , gugun varchar(50)
+) default  character set utf8;
+
+
+
+5) 외부 파일로부터 데이터 로드하기
+ csv에 한글이 들어있을때 <character set utf8> 
+load data local 
+infile 'C:/korea202102_jsworkspace/day0323/db/zip.csv'
+into table post
+character set utf8
+fields terminated by ','
+lines  terminated by '\n'
+(zipcode,sido,gugun); 
+
+6) 데이터가 많이 누적된 경우 , 검색 속도를 빠르게 하기 위해
+   검색 대상이 되는 컬럼에 색인을 생성할 수 있다...
+   이렇게 컬럼을 대상으로 색인을 지정할 수 있는 제약조건을 
+   index 제약조건이라고 한다...
+
+※ 주의 : 색인은 DML( update, insert, delete) 빈번한 경우엔
+	부하가 발생함. 왜? 수정된 데이터를 대상으로 색인 또한
+	수정되어 관리되어야 하므로..
+추천) 주로 조회만 대상으로 하는 컬럼에 index를 건다!!
+
+create index index_post
+on post(sido);
+
+색인은 데이터량이 많아야 의미가 있다.. 적으면 피부로 느낄 수 없음..
+
+select * from post where sido like '서울%';
+
+7) 조금이나 속도 차이를 느끼기 위해 인덱스를 걸지 않은 
+   테이블의 조회 속도를 측정해보자
+
+   테이블 복사 뜨기
+create table post2
+as
+select * from post;
+
+select * from post2 where sido like '서울%';
+
+<index는 select 조회 대상으로만 써라>
+

@@ -1,0 +1,240 @@
+SQL> --제약조건 사용 목적 (데이터 무결성)
+SQL> --어제 배운거 unique - 중복 데이터 허용하지 않음
+SQL> --unique는 null을 허용해 버린다
+SQL> --실습
+SQL> select table_name from user_tables;
+
+TABLE_NAME                                                                      
+------------------------------------------------------------                    
+MEMBER                                                                          
+DEPT                                                                            
+EMP                                                                             
+MEMBER2                                                                         
+MEMBER3                                                                         
+
+SQL> desc member3;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ NAME                                               VARCHAR2(20)
+ PHONE                                     NOT NULL VARCHAR2(13)
+ AGE                                                NUMBER
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* select table_name from user_tables
+SQL> select table_name from user_tables;
+
+TABLE_NAME                                                                      
+------------------------------------------------------------                    
+MEMBER                                                                          
+DEPT                                                                            
+EMP                                                                             
+MEMBER2                                                                         
+MEMBER3                                                                         
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* select table_name from user_tables
+SQL> selelct * from dept;
+SP2-0734: unknown command beginning "selelct * ..." - rest of line ignored.
+SQL> select * from dept;
+
+    DEPTNO DNAME                        LOC                                     
+---------- ---------------------------- --------------------------              
+        10 ACCOUNTING                   NEW YORK                                
+        20 RESEARCH                     DALLAS                                  
+        30 SALES                        CHICAGO                                 
+        40 OPERATIONS                   BOSTON                                  
+
+SQL> select * from emp;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7369 SMITH                CLERK                    7902 80/12/17          
+       800                    20                                                
+                                                                                
+      7499 ALLEN                SALESMAN                 7698 81/02/20          
+      1600        300         30                                                
+                                                                                
+      7521 WARD                 SALESMAN                 7698 81/02/22          
+      1250        500         30                                                
+                                                                                
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7566 JONES                MANAGER                  7839 81/04/02          
+      2975                    20                                                
+                                                                                
+      7654 MARTIN               SALESMAN                 7698 81/09/28          
+      1250       1400         30                                                
+                                                                                
+      7698 BLAKE                MANAGER                  7839 81/05/01          
+      2850                    30                                                
+                                                                                
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7782 CLARK                MANAGER                  7839 81/06/09          
+      2450                    10                                                
+                                                                                
+      7788 SCOTT                ANALYST                  7566 87/04/19          
+      3000                    20                                                
+                                                                                
+      7839 KING                 PRESIDENT                     81/11/17          
+      5000                    10                                                
+                                                                                
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7844 TURNER               SALESMAN                 7698 81/09/08          
+      1500          0         30                                                
+                                                                                
+      7876 ADAMS                CLERK                    7788 87/05/23          
+      1100                    20                                                
+                                                                                
+      7900 JAMES                CLERK                    7698 81/12/03          
+       950                    30                                                
+                                                                                
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7902 FORD                 ANALYST                  7566 81/12/03          
+      3000                    20                                                
+                                                                                
+      7934 MILLER               CLERK                    7782 82/01/23          
+      1300                    10                                                
+                                                                                
+
+14 rows selected.
+
+SQL> set line 250
+SQL> select * from emp;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                                                                   
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                                                                   
+      7369 SMITH                CLERK                    7902 80/12/17        800                    20                                                                                                                                                   
+      7499 ALLEN                SALESMAN                 7698 81/02/20       1600        300         30                                                                                                                                                   
+      7521 WARD                 SALESMAN                 7698 81/02/22       1250        500         30                                                                                                                                                   
+      7566 JONES                MANAGER                  7839 81/04/02       2975                    20                                                                                                                                                   
+      7654 MARTIN               SALESMAN                 7698 81/09/28       1250       1400         30                                                                                                                                                   
+      7698 BLAKE                MANAGER                  7839 81/05/01       2850                    30                                                                                                                                                   
+      7782 CLARK                MANAGER                  7839 81/06/09       2450                    10                                                                                                                                                   
+      7788 SCOTT                ANALYST                  7566 87/04/19       3000                    20                                                                                                                                                   
+      7839 KING                 PRESIDENT                     81/11/17       5000                    10                                                                                                                                                   
+      7844 TURNER               SALESMAN                 7698 81/09/08       1500          0         30                                                                                                                                                   
+      7876 ADAMS                CLERK                    7788 87/05/23       1100                    20                                                                                                                                                   
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                                                                   
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                                                                   
+      7900 JAMES                CLERK                    7698 81/12/03        950                    30                                                                                                                                                   
+      7902 FORD                 ANALYST                  7566 81/12/03       3000                    20                                                                                                                                                   
+      7934 MILLER               CLERK                    7782 82/01/23       1300                    10                                                                                                                                                   
+
+14 rows selected.
+
+SQL> --결론 : 레코드가 여러건 들어올때 중복이 발생할 수 있으므로 , 중복 불허용 + null불허
+SQL> --두개의 제약조건 (unique + not null = primary key)을 합쳐놓은 주 키 제약조건을 많이 사용
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table member4(
+  2   member4_id number primary key
+  3   , name varchar(20)
+  4   , age number
+  5   , phone varchar(13) 
+  6* )
+SQL> /
+
+Table created.
+
+SQL> --주키 제약조건이 설정된 컬럼에 값을 넣는 실습
+SQL> insert into member4(member4_id, name, age , phone)
+  2  values(인간이 기억해서 넣어라?)
+  3  
+SQL> --주키에 들어갈 숫자값 데이터는 개발자가 정하는게 아니라, 시스템에 의해 결정되어야 한다.
+SQL> --오라클에는 테이블에 숫자값을  관리해주는 전담 테이블을 지원하는데 이 객체를 가리켜
+SQL> --시퀀스라 한다 (sequence)
+SQL> --시퀀스 생성 (DDL)
+SQL> --create sequence seq_대상테이블
+SQL> create sequence seq_member4
+  2  increment by 1
+  3  start with 1;
+create sequence seq_member4
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> --시퀀스 생성에 대한 권한이 없다 .
+SQL> -- system 으로 접속
+SQL> --계 정 전환할때는 conn 이다.
+SQL> conn system/1234
+Connected.
+SQL> show user
+USER is "SYSTEM"
+SQL> -- 권한은 DDL , DCL(권한), DML ?
+SQL> grant create sequence to adam;
+
+Grant succeeded.
+
+SQL> --다시 아담으로 접속
+SQL> conn adam/1234
+Connected.
+SQL> show user
+USER is "ADAM"
+SQL> --시퀀스 생성하기 (DDL)
+SQL> create sequence seq_member4
+  2  increment by 1
+  3  start with 1;
+
+Sequence created.
+
+SQL> insert into member
+  2  /
+insert into member
+                 *
+ERROR at line 1:
+ORA-00926: missing VALUES keyword 
+
+
+SQL> insert into member4(member4_id, name, age, phone)
+  2  values(seq_member4, nextval,'batman',38,'010');
+insert into member4(member4_id, name, age, phone)
+            *
+ERROR at line 1:
+ORA-00913: too many values 
+
+
+SQL> insert into member4(member4_id, name, age, phone) values(seq_member4.nextval,'batman',38,'010');
+
+1 row created.
+
+SQL> select * from member4;
+
+MEMBER4_ID NAME                                            AGE PHONE                                                                                                                                                                                      
+---------- ---------------------------------------- ---------- --------------------------                                                                                                                                                                 
+         1 batman                                           38 010                                                                                                                                                                                        
+
+SQL> --DDL 명령어는 이제까지의 트랜잭션을 확정지어 버린다..
+SQL> --시퀀스 조회 딕셔너리
+SQL> select sequence_name from user_sequences;
+
+SEQUENCE_NAME                                                                                                                                                                                                                                             
+------------------------------------------------------------                                                                                                                                                                                              
+SEQ_MEMBER4                                                                                                                                                                                                                                               
+
+SQL> show user
+USER is "ADAM"
+SQL> spool off

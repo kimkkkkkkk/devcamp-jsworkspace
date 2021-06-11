@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    #banner-frame{
+        width: 415px;
+        height: 110px;
+        background-color: tomato;
+        margin: auto;
+        padding: 5px;
+        box-sizing: border-box;/*padding ,margin에 영향을 받지 않음 잘 알고 싶으면 퍼블리셔 공부하기 개발자니까 그냥 알아만 두기*/
+        position: relative; /*부모는 정가운데 있어서 이걸로 주고 자식때문에 포지션 바꿔여 함*/
+    }
+
+</style>
+<script>
+var bannerFrame; // 프로그램에서 - 마이너스라 생각 //모든 함수에서 접근하기 위해
+var gap=5; // 이미지간 간격
+
+//변수명은 조합될 수 없음 ex) var x+i=3 불가능 변수는 데이터와조합 
+//대량의 데이터를 처리할때는 변수선업은 불리하다 불!!!!!!!! (다음주에 다시 시작)
+//변수명은 겹치면 안됨으로 틀리게 한다.
+function init(){   
+    bannerFrame = document.getElementById("banner-frame");
+    createProduct();
+}
+function createProduct(){
+  //액자 안에 제품 이미지 8개를 동적으로 생성하여 위치시켜본다!! // 얘네들이 반복이 될 것임 그러니 for문
+  for(var i =1;i<=8;i++){
+      var img =document.createElement("img"); // <img> 와 동일
+      img.src="../image/chair/"+i+".jpg"; // <img src =">와 동일
+      img.style.width=100+"px";
+      img.style.height=100+"px";
+      img.style.position="absolute";
+      img.style.left=(100+gap)*(i-1)+"px"; //하나의 이미지가 차지하는 비율 = (100+gap)*(i-1)라는 말 , 이미지 하나의 x위치
+
+      
+        // 배너에 이미지 부착
+      bannerFrame.appendChild(img);
+     }
+
+  }
+// 생성된 이미지를 움직이기
+function move(){
+}
+window.addEventListener("load",function(){
+        init();
+    });
+</script>
+</head>
+<body>
+    <div id = "banner-frame">  
+       <!-- 동적으로 넣을 거임 -->
+    </div>
+</body>
+</html>

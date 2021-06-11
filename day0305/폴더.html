@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+ <script>
+     var status; // 상태를 담게 될 변수
+     var flag=true; // 삼항 연사자의 판단 대상이 될 논리값
+                         // 아래의 삼항연산자는 이 값이 true 일 때 on 반환 할 것이고,
+                        // 이 값이 false 일때는 off를 반환하고 있다.
+
+     function openClose(){
+         //문서내의 folder 라는 요소의 src를 변경해보되, 변경 할 이미지가 단 2가지 경우 밖에 
+         // 없으므로 ,어떠한 이미지가 나올지는 삼항연산자에게 맡겨보자!! 
+         // true이면 on, false이면 off
+         status = (flag)? "on":"off" ; // 괄호 안 flag 는 변수이다
+         document.querySelector("#folder").src="../image/folder_"+status+".webp";
+         console.log("현재status=", status, "현재 flag=",flag); // 이거 전까지만 쓰면 물론 누르면 변하지만
+         //f12  개발자 모드에서 값이 고정 되어 있음 그래서 얘를 써줘야 계속 값이 변함
+         
+         flag = !flag;
+        }
+
+</script>
+</head>
+<body>
+    <img id = "folder" src="../image/folder_off.webp" onClick="openClose()">
+</body>
+</html>

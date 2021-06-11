@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+#wrapper{
+    width: 1000px;
+    height: 340px;
+    background-color: rgb(247, 237, 149);
+    margin: auto;
+    overflow: hidden;
+    text-align: center;
+}
+</style>
+<script>
+var wrapper;
+var cardArray=[]; // 원래 var casd; 였음 카드 한개 하지만 여러개 만들어야해서 생성된 카드를 담아둘 배열
+ //전역으로 안넣으면 이미 죽은 변수이므로 접근할 수 가 없음 밑에 var= card 랑 다름 얘는 전역 밑에는 지역
+  // 상관성 없음 유지보수와  일관성 떄문에 같은 이름으로 전역으로 넣은 것
+var a=0.3; // 부드러운 정도 (0~1 까지 1로갈수록 둔탁)
+var targetY=[]; // 텍스트 박스의 목표지점 ,초창기는 0에서 시작 , 카드가 세개니 배열로 가야함
+var imgArray=["f.jpg","flower.jpg","flower3.jpg"]; // 반복문에 써먹으려고 배열로 선언
+var msgArray=["HELLO","HI","WELCOME"];
+
+function init(){
+    wrapper = document.getElementById("wrapper");
+
+for(var i=0;i<3;i++){
+    targetY[i]=270; // 3개의 targetY의 값을 270으로 설정
+    cardArray[i] = createCard(i, imgArray[i], msgArray[i] ); //생성된 카드를 전역변수로 호출-> card였다가 변수이름 바뀜
+    wrapper.appendChild(cardArray[i]); // 카드 한개 생성 호출! -> 여기서 리턴됨, card였다가 변수이름 바뀜
+    }
+}
+// 카드 한개를 생성하는 함수
+//매개변수 index의 역할 = 0일때 targetY[0], 1일때 targetY[1], 2일때 targetY[2]
+function createCard(index, src,msg){
+    console.log("createCard호출시 넘겨받은 인덱스는",index);
+    
+    var card=document.createElement("div"); // 이미지를 배경으로 안고 있는 바깥쪽 카드
+   //여기서 부른 지역변수 카드는 밑에서 리턴할때  닫는 브레이스 떄문에 쥬금 그치만 뒤에 다큐먼트 뭐시기는 데이터가 남아있음 
+    card.style.width=300+"px";
+    card.style.height=320+"px";
+    card.style.backgroundImage="url(../image/YOUNG/"+src+")";
+    card.style.backgroundSize="cover";
+    card.style.position="relative";// 자식때문에
+    card.style.overflow="hidden";
+    card.style.float="left";
+    card.style.margin=5+"px";
+    card.style.boxSizing="border-box";
+
+    // 텍스트 박스
+    var textBox=document.createElement("div");
+    textBox.style.width=300+"px";
+    textBox.style.height=320+"px";
+    textBox.style.background="black";
+    textBox.style.opacity=0.8;//0이투명 1이 불투명
+    textBox.style.position="absolute";
+    textBox.style.top= 270+"px";
+    textBox.innerText=msg;
+    textBox.style.color="white";
+    textBox.style.fontSize=18+"px";
+    textBox.style.textAlign="center";
+    textBox.style.boxSizing="border-box";
+    textBox.style.paddingTop=15+"px";
+
+    //마우스 오버 이벤트 구현
+    textBox.addEventListener("mouseover",function(){
+        //top좌표를 0으로 올라가 보자 (부드러운 움직임은 나중에 구현)
+       targetY[index]=0;
+       console.log("내가 사용할 인덱스는", index);
+    });
+    textBox.addEventListener("mouseout",function(){
+        targetY[index]=270;
+    });
+
+    //조립 (텍스트 박스를 카드에 넣자)
+    card.appendChild(textBox);
+    return card;
+}
+
+//부드럽게 오르내리는 감속도 처리 함수
+function slideUpDown(){ // 그래서 위에 죽은 카드 변수가 여기서 접근을 못함 이미 그위에 브레이스에서 닫았을때 죽어서 
+    //물체 위치 = 기존 물체위치 + a*(목표지점-기존물체위치)
+
+    for(var i=0;i<cardArray.length;i++){//3개의 카드 각자마다.. 움직임적용
+    var textBox=cardArray[i].children[0]; //textBox라는 안쪽 div를 지칭 , 얘는 여기서만 살아가는 지역변수
+   // console.log("움직일 대상 div는 ",textBox);
+   textBox.style.top = parseFloat(textBox.style.top)+a*(targetY[i]-parseFloat(textBox.style.top))+"px";
+    }
+}   
+
+window.addEventListener("load", function(){
+    init();
+    setInterval("slideUpDown()",10); // 심장은 여러개가 아니라 1개 계속 뛰게 해야한다
+});
+</script>
+</head>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>

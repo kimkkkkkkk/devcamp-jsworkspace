@@ -1,0 +1,20 @@
+<script>
+    //두수 3,4 의 합을 구한느 함수
+
+    function sum(x,y){ // 매개변수
+        var result = x+y; // 연산 시작
+        return result; // 호출자에게 결과를 반환! 리턴값변수 , 되돌아가라 함수를 호출했던 곳
+        // 리턴을 지나가는 실행부는 없음 
+    }
+    var n = sum(3,4); // 실행부 : 위에 지나고 7번 에서 실행  // 되돌아옴 이 자리는 7 이됨 
+    document.write(n); // 최초 호출했던 곳 7을 가지고 옴, n의 값은 7이 됨
+    // document.write(result);  result는 지역변수라 접근 못함 
+
+    function getMsg(msg){
+        document.write("자바");
+        return;
+        document.write(msg);
+
+    }
+    getMsg("하이");  // 하이라는 문자가 첫째줄 msg에 그리고 자바 만나서 자바가 찍힘 리턴 만나서 되돌아가서 msg는 하이로 감  두번째 다큐먼트 실행부는 만날일이 없다 그래서 하이는 나올 수 없다
+</script>

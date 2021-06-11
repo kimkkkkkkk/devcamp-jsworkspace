@@ -1,0 +1,176 @@
+SQL> --현재 접속 유저 알아보기 (SQLPlus명령어)
+SQL> show user
+USER is "SYSTEM"
+SQL> --현재 계정이 관리자 계정이므로,시스템 관리와 관련된 거의 모든 권한을 가지고 있다..
+SQL> --따라서 오라클 설치시 이미 함께  자동을 설치되는 여러 시스템 정보를 가진
+SQL> --시스템 테이블을 이용하여 정보들을 출력해보자.
+SQL> --시스템 관리 목적으로 이미 제공되는 테이블(표)들을 가리켜 딕셔너리(사전) 라 한다.
+SQL> --근데, 시스템 테이블은 그 수가 수백여가지가 되므로, 모두 암기가 불가능하다..
+SQL> --Tip) 명명규칙을 알면 그나마 쉽게 접근이 가능
+SQL> --접속계정이 관리자이면 dba_로 시작함, 일반계정이면 user_로 시작함..
+SQL> --실습1) 현재 오라클 서버에 존재하는 데이터베이스 조회
+SQL> select tablespace_name from dba_tablespaces;
+
+TABLESPACE_NAME                                                                 
+------------------------------------------------------------                    
+SYSTEM                                                                          
+SYSAUX                                                                          
+UNDOTBS1                                                                        
+TEMP                                                                            
+USERS                                                                           
+FRONTSPACE                                                                      
+
+6 rows selected.
+
+SQL> --실습2) 현재 오라클 서버에 존재하는 사용자 조회
+SQL> select username from dba_users;
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+SYS                                                                             
+SYSTEM                                                                          
+ANONYMOUS                                                                       
+FRONT                                                                           
+APEX_PUBLIC_USER                                                                
+FLOWS_FILES                                                                     
+APEX_040000                                                                     
+OUTLN                                                                           
+DIP                                                                             
+ORACLE_OCM                                                                      
+XS$NULL                                                                         
+
+USERNAME                                                                        
+------------------------------------------------------------                    
+MDSYS                                                                           
+CTXSYS                                                                          
+DBSNMP                                                                          
+XDB                                                                             
+APPQOSSYS                                                                       
+HR                                                                              
+
+17 rows selected.
+
+SQL> --원하는 사용자로 접속을 변경하기
+SQL> --connect or conn
+SQL> conn front/1234
+Connected.
+SQL> --현재 접속한 사용자가 어떠한 테이블들을 보유하고 있는지 조회해 보자 !!
+SQL> --역시나 사전을 찾아보면 된다.. 근데 사전명이 수백여가지...
+SQL> --현재 접속자가 일반 계정이므로, 적어도 user_로 시작할 것이다..
+SQL> select table_name from user_tables;
+
+TABLE_NAME                                                                      
+------------------------------------------------------------                    
+STUDENT                                                                         
+
+SQL> -- 현재 유저는 student 라는 테이블을 보유하고 있는게 확인됨
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ NAME                                               VARCHAR2(20)
+ MONEY                                              NUMBER
+ REGDATE                                            DATE
+
+SQL> --desc는 설명하다 describe 에서 온 단어이며, 이 명령어는 레코드 즉 데이터를 조회하는게 아니라,
+SQL> --현재 테이블이 어떠한 컬럼들로 구성되어 있고, 그 컬럼의 크기가 어떻게 되는지를 설명해준다..
+SQL> --즉 메타 정보를 츌력한다.
+SQL> --테이블을 조회할때는 select 문을 사용한다.
+SQL> select name, moeny, regdate from student;
+select name, moeny, regdate from student
+             *
+ERROR at line 1:
+ORA-00904: "MOENY": invalid identifier 
+
+
+SQL> select name, money, regdate from student;
+
+no rows selected
+
+SQL> --테이블에 데이터 (레코드) 넣기
+SQL> insert into student(name,money,regdate) values('홍길동',2000,'2021-03-02');
+
+1 row created.
+
+SQL> --방금 들어간 레코드 조회하자
+SQL> select name, money, regdate from student;
+
+NAME                                          MONEY REGDATE                     
+---------------------------------------- ---------- --------                    
+홍길동                                         2000 21/03/02                    
+
+SQL> --지금까지 써왔던 system 계정의 비번을 바꿔보자!!
+SQL> --시스템보다 더 높은 권한인 sys로 로그인한다
+SQL> conn sys/ as sysdba
+ERROR:
+ORA-01031: insufficient privileges 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> show user;
+USER is ""
+SQL> conn syste/ as sysdba
+ERROR:
+ORA-01031: insufficient privileges 
+
+
+SQL> conn sys/admin1234 as sysdba
+Connected.
+SQL> conn system/admin1234
+Connected.
+SQL> conn sys/ as sysdba
+ERROR:
+ORA-01031: insufficient privileges 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> conn sys/admin as sysdba
+ERROR:
+ORA-01031: insufficient privileges 
+
+
+SQL> conn sys.admin1234
+ERROR:
+ORA-01005: null password given; logon denied 
+
+
+SQL> conn sys.admin1234 as sysdba
+ERROR:
+ORA-01031: insufficient privileges 
+
+
+SQL> conn sys/admin1234 as sysdba
+Connected.
+SQL> show user
+USER is "SYS"
+SQL> --system의 비번을 변경한다
+SQL> --변경 할때는 alter 문을 사용한다
+SQL> --여기서부터 전해드릴예정-------------
+SQL> show user
+USER is "SYS"
+SQL> alter user system
+  2  identified by 1234;
+
+User altered.
+
+SQL> conn system/1234
+Connected.
+SQL> show user
+USER is "SYSTEM"
+SQL> create tablespace javaspace
+  2  datafile 'C:\oraclexe\app\oracle\oradata\XE\javaspace.dbf'size 2m;
+
+Tablespace created.
+
+SQL> --사용자 생성
+SQL> create user adam
+  2  identified by 1234
+  3  default tablespace javaspace
+  4  quota unlimited on javaspace;
+
+User created.
+
+SQL> --유저 정보는 어디에 만들어지지?
+SQL> --딕셔너리에..
+SQL> --users 테이블스페이스에 생성됨
+SQL> --데이터베이스와 관련된 시스템 정보는 관리자의 권한으로 사용가능하므로 접속을 system 바꾸자
+SQL> spool off

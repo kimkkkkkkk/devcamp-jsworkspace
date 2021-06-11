@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="../js/store.js"></script>
+<script>
+var googleMap = [];
+/*위의 div가 로드되면 접근하려고*/
+function myMap() {
+    var markerArray=[];
+    var mapProp = {
+        center: new google.maps.LatLng( 37.499987266702085,127.03546584665713),
+        zoom: 20,
+
+        //변수명은 생략가능, 구글맵할때 저 center, zoom은 변수명 못바꿈 구글에서 변수를 정한것이기때문에
+    };
+    var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+
+    // for(store of store.storeList){
+    for(var i=0;i<store.storeList.length;i++){
+        
+        var jumpo = store.storeList[i];
+
+        var marker = new google.maps.Marker({
+            position: jumpo.latLng,
+            animation: google.maps.Animation.BOUNCE,
+            icon: {
+                url: jumpo.image,
+                scaledSize: new google.maps.Size(50, 50),
+            },
+        });  //마커를 생성하자!!
+        
+         marker.setMap(map);
+         
+         storeName(marker, i, map);
+    }
+};
+   
+    
+function storeName(marker, index, map) {
+
+    google.maps.event.addListener(marker, "click", function(){
+    
+        var infowindow = new google.maps.InfoWindow({
+            content:store.storeList[index].name+"<br>"+store.storeList[index].review
+        });
+        infowindow.open(map, marker);
+    }); 
+};
+
+function init(){
+    googleMap = document.getElementById("googleMap");
+    //  console.log("store ============== ",store);
+
+}
+window.addEventListener("load", function(){
+    init();
+});
+</script>
+</head>
+<body>
+<h1>My First Google Map</h1>
+<div id="googleMap" style="width: 100%; height: 600px"></div>
+
+<!-- 구글맵을 불러오는데는, 시간이 필요하다..이때 구글맵이 브라우저에 다 로드가 되면 
+callback에서 명시한 myMap이라 함수를 호출 -->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfEpBgB652eY3a_ffrJI0NPi50b3p6rSs&callback=myMap"></script>
+</body>
+</html>

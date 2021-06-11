@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<script>
+//document.write("<h1 style=\"font-size:100px\">나 제목?</h1>"); // 꺽새만 <>있으면 태그로 생각한다 브라우저는 멍청
+
+
+document.write(" <table width =\"600px\" border=\"1px\">");
+for(var i=3;i>=1;i--){
+   document.write("<tr>");
+   for(var a = 1; a<=2;a++){
+    document.write(" <td>"+i+"0"+a+"</td>"); // 30번 머물 라인
+}
+  document.write("</tr>");
+}
+document.write("</table>");
+
+
+
+
+
+
+document.write(" <table width =\"500px\" border=\"1px\">");
+
+  for(var i=3;i>=1;i--){
+   document.write("<tr align='center'>");
+   for(var a = 1; a<=2;a++){
+    document.write(" <td>"+i+"0"+a+"호"+"</td>"); // 30번 머물 라인
+}
+  document.write("</tr>");
+}
+document.write("</table>");
+
+
+window.addEventListener("load",function(){
+
+ });
+
+
+
+
+
+
+
+
+
+ //     document.write("<tr>");
+// document.write(" <td>"+i+"01</td>");
+// document.write(" <td>"+i+"02</td>");
+// document.write(" <td>"+i+"03</td>");
+// document.write(" <td>"+i+"04</td>");
+// document.write("</tr>");
+// }
+// document.write("</table>");
+
+    //  표는 곧 이중포문과 일치한다.
+  // 바깥쪽 포문이 층수  안쪽포문이 호수
+  // for(){  바깥쪽 포문 (층수)
+   // for(){ 안쪽호문 (호수)
+
+  //}
+ // }
+       
+
+
+
+
+
+
+
+</script>
+</head>
+<body>
+</body>
+</html>

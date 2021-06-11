@@ -1,0 +1,271 @@
+SQL> --제약조건
+SQL> --unique, not null, primary key, defaulf, check,foreign key, index
+SQL> set line 200
+SQL> selelct * from dept;
+SP2-0734: unknown command beginning "selelct * ..." - rest of line ignored.
+SQL> select * from dept;
+
+    DEPTNO DNAME                        LOC                                                                                                                                                             
+---------- ---------------------------- --------------------------                                                                                                                                      
+        10 ACCOUNTING                   NEW YORK                                                                                                                                                        
+        20 RESEARCH                     DALLAS                                                                                                                                                          
+        30 SALES                        CHICAGO                                                                                                                                                         
+        40 OPERATIONS                   BOSTON                                                                                                                                                          
+
+SQL> select * from emp;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                 
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                 
+      7369 SMITH                CLERK                    7902 80/12/17        800                    20                                                                                                 
+      7499 ALLEN                SALESMAN                 7698 81/02/20       1600        300         30                                                                                                 
+      7521 WARD                 SALESMAN                 7698 81/02/22       1250        500         30                                                                                                 
+      7566 JONES                MANAGER                  7839 81/04/02       2975                    20                                                                                                 
+      7654 MARTIN               SALESMAN                 7698 81/09/28       1250       1400         30                                                                                                 
+      7698 BLAKE                MANAGER                  7839 81/05/01       2850                    30                                                                                                 
+      7782 CLARK                MANAGER                  7839 81/06/09       2450                    10                                                                                                 
+      7788 SCOTT                ANALYST                  7566 87/04/19       3000                    20                                                                                                 
+      7839 KING                 PRESIDENT                     81/11/17       5000                    10                                                                                                 
+      7844 TURNER               SALESMAN                 7698 81/09/08       1500          0         30                                                                                                 
+      7876 ADAMS                CLERK                    7788 87/05/23       1100                    20                                                                                                 
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                 
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                 
+      7900 JAMES                CLERK                    7698 81/12/03        950                    30                                                                                                 
+      7902 FORD                 ANALYST                  7566 81/12/03       3000                    20                                                                                                 
+      7934 MILLER               CLERK                    7782 82/01/23       1300                    10                                                                                                 
+
+14 rows selected.
+
+SQL> --정규화에 의해 물리적으로 분리된 테이블을 마치 하나의 테이블처럼 합쳐서 조회하는 select 를  join 이라한다.
+SQL> --dept, emp를 합쳐보자
+SQL> --형식 select 가져올 컬럼
+SQL> --	    from 조인대상테이블 A , 조인대상테이블 B.......
+SQL> --     where  합칠때의 조건 ,..
+SQL> select ename,job , dname , loc
+  2  from emp. dept;
+from emp. dept
+          *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> select ename,job , dname,loc
+  2  from emp, dept;
+
+ENAME                JOB                DNAME                        LOC                                                                                                                                
+-------------------- ------------------ ---------------------------- --------------------------                                                                                                         
+SMITH                CLERK              ACCOUNTING                   NEW YORK                                                                                                                           
+ALLEN                SALESMAN           ACCOUNTING                   NEW YORK                                                                                                                           
+WARD                 SALESMAN           ACCOUNTING                   NEW YORK                                                                                                                           
+JONES                MANAGER            ACCOUNTING                   NEW YORK                                                                                                                           
+MARTIN               SALESMAN           ACCOUNTING                   NEW YORK                                                                                                                           
+BLAKE                MANAGER            ACCOUNTING                   NEW YORK                                                                                                                           
+CLARK                MANAGER            ACCOUNTING                   NEW YORK                                                                                                                           
+SCOTT                ANALYST            ACCOUNTING                   NEW YORK                                                                                                                           
+KING                 PRESIDENT          ACCOUNTING                   NEW YORK                                                                                                                           
+TURNER               SALESMAN           ACCOUNTING                   NEW YORK                                                                                                                           
+ADAMS                CLERK              ACCOUNTING                   NEW YORK                                                                                                                           
+
+ENAME                JOB                DNAME                        LOC                                                                                                                                
+-------------------- ------------------ ---------------------------- --------------------------                                                                                                         
+JAMES                CLERK              ACCOUNTING                   NEW YORK                                                                                                                           
+FORD                 ANALYST            ACCOUNTING                   NEW YORK                                                                                                                           
+MILLER               CLERK              ACCOUNTING                   NEW YORK                                                                                                                           
+SMITH                CLERK              RESEARCH                     DALLAS                                                                                                                             
+ALLEN                SALESMAN           RESEARCH                     DALLAS                                                                                                                             
+WARD                 SALESMAN           RESEARCH                     DALLAS                                                                                                                             
+JONES                MANAGER            RESEARCH                     DALLAS                                                                                                                             
+MARTIN               SALESMAN           RESEARCH                     DALLAS                                                                                                                             
+BLAKE                MANAGER            RESEARCH                     DALLAS                                                                                                                             
+CLARK                MANAGER            RESEARCH                     DALLAS                                                                                                                             
+SCOTT                ANALYST            RESEARCH                     DALLAS                                                                                                                             
+
+ENAME                JOB                DNAME                        LOC                                                                                                                                
+-------------------- ------------------ ---------------------------- --------------------------                                                                                                         
+KING                 PRESIDENT          RESEARCH                     DALLAS                                                                                                                             
+TURNER               SALESMAN           RESEARCH                     DALLAS                                                                                                                             
+ADAMS                CLERK              RESEARCH                     DALLAS                                                                                                                             
+JAMES                CLERK              RESEARCH                     DALLAS                                                                                                                             
+FORD                 ANALYST            RESEARCH                     DALLAS                                                                                                                             
+MILLER               CLERK              RESEARCH                     DALLAS                                                                                                                             
+SMITH                CLERK              SALES                        CHICAGO                                                                                                                            
+ALLEN                SALESMAN           SALES                        CHICAGO                                                                                                                            
+WARD                 SALESMAN           SALES                        CHICAGO                                                                                                                            
+JONES                MANAGER            SALES                        CHICAGO                                                                                                                            
+MARTIN               SALESMAN           SALES                        CHICAGO                                                                                                                            
+
+ENAME                JOB                DNAME                        LOC                                                                                                                                
+-------------------- ------------------ ---------------------------- --------------------------                                                                                                         
+BLAKE                MANAGER            SALES                        CHICAGO                                                                                                                            
+CLARK                MANAGER            SALES                        CHICAGO                                                                                                                            
+SCOTT                ANALYST            SALES                        CHICAGO                                                                                                                            
+KING                 PRESIDENT          SALES                        CHICAGO                                                                                                                            
+TURNER               SALESMAN           SALES                        CHICAGO                                                                                                                            
+ADAMS                CLERK              SALES                        CHICAGO                                                                                                                            
+JAMES                CLERK              SALES                        CHICAGO                                                                                                                            
+FORD                 ANALYST            SALES                        CHICAGO                                                                                                                            
+MILLER               CLERK              SALES                        CHICAGO                                                                                                                            
+SMITH                CLERK              OPERATIONS                   BOSTON                                                                                                                             
+ALLEN                SALESMAN           OPERATIONS                   BOSTON                                                                                                                             
+
+ENAME                JOB                DNAME                        LOC                                                                                                                                
+-------------------- ------------------ ---------------------------- --------------------------                                                                                                         
+WARD                 SALESMAN           OPERATIONS                   BOSTON                                                                                                                             
+JONES                MANAGER            OPERATIONS                   BOSTON                                                                                                                             
+MARTIN               SALESMAN           OPERATIONS                   BOSTON                                                                                                                             
+BLAKE                MANAGER            OPERATIONS                   BOSTON                                                                                                                             
+CLARK                MANAGER            OPERATIONS                   BOSTON                                                                                                                             
+SCOTT                ANALYST            OPERATIONS                   BOSTON                                                                                                                             
+KING                 PRESIDENT          OPERATIONS                   BOSTON                                                                                                                             
+TURNER               SALESMAN           OPERATIONS                   BOSTON                                                                                                                             
+ADAMS                CLERK              OPERATIONS                   BOSTON                                                                                                                             
+JAMES                CLERK              OPERATIONS                   BOSTON                                                                                                                             
+FORD                 ANALYST            OPERATIONS                   BOSTON                                                                                                                             
+
+ENAME                JOB                DNAME                        LOC                                                                                                                                
+-------------------- ------------------ ---------------------------- --------------------------                                                                                                         
+MILLER               CLERK              OPERATIONS                   BOSTON                                                                                                                             
+
+56 rows selected.
+
+SQL> select ename,job , dname,loc
+  2  k
+  3  /
+k
+*
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> de
+SP2-0042: unknown command "de" - rest of line ignored.
+SQL> ed
+Wrote file afiedt.buf
+
+  1  select ename,job , dname,loc
+  2  from emp, dept
+  3* where deptno=deptno
+SQL> /
+where deptno=deptno
+             *
+ERROR at line 3:
+ORA-00918: column ambiguously defined 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  select ename,job , deptno, dname, loc
+  2  from emp, dept
+  3* where deptno=deptno
+SQL> /
+where deptno=deptno
+             *
+ERROR at line 3:
+ORA-00918: column ambiguously defined 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  select ename,job , deptno, dname, loc
+  2  from emp, dept
+  3* where emp.deptno=dept.deptno
+SQL> /
+select ename,job , deptno, dname, loc
+                   *
+ERROR at line 1:
+ORA-00918: column ambiguously defined 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  select ename,job , dept.deptno, dname, loc
+  2  from emp, dept
+  3* where emp.deptno=dept.deptno
+SQL> /
+
+ENAME                JOB                    DEPTNO DNAME                        LOC                                                                                                                     
+-------------------- ------------------ ---------- ---------------------------- --------------------------                                                                                              
+SMITH                CLERK                      20 RESEARCH                     DALLAS                                                                                                                  
+ALLEN                SALESMAN                   30 SALES                        CHICAGO                                                                                                                 
+WARD                 SALESMAN                   30 SALES                        CHICAGO                                                                                                                 
+JONES                MANAGER                    20 RESEARCH                     DALLAS                                                                                                                  
+MARTIN               SALESMAN                   30 SALES                        CHICAGO                                                                                                                 
+BLAKE                MANAGER                    30 SALES                        CHICAGO                                                                                                                 
+CLARK                MANAGER                    10 ACCOUNTING                   NEW YORK                                                                                                                
+SCOTT                ANALYST                    20 RESEARCH                     DALLAS                                                                                                                  
+KING                 PRESIDENT                  10 ACCOUNTING                   NEW YORK                                                                                                                
+TURNER               SALESMAN                   30 SALES                        CHICAGO                                                                                                                 
+ADAMS                CLERK                      20 RESEARCH                     DALLAS                                                                                                                  
+
+ENAME                JOB                    DEPTNO DNAME                        LOC                                                                                                                     
+-------------------- ------------------ ---------- ---------------------------- --------------------------                                                                                              
+JAMES                CLERK                      30 SALES                        CHICAGO                                                                                                                 
+FORD                 ANALYST                    20 RESEARCH                     DALLAS                                                                                                                  
+MILLER               CLERK                      10 ACCOUNTING                   NEW YORK                                                                                                                
+
+14 rows selected.
+
+SQL> --결론 select 문은 실제 물리적인 테이블 구조에 영향을 주지 X
+SQL> --조인문은 논리적 즉 메모상 가상 테이블이 반환되는 것이다!!
+SQL> slect *from emp;
+SP2-0734: unknown command beginning "slect *fro..." - rest of line ignored.
+SQL> select * from emp;
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                 
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                 
+      7369 SMITH                CLERK                    7902 80/12/17        800                    20                                                                                                 
+      7499 ALLEN                SALESMAN                 7698 81/02/20       1600        300         30                                                                                                 
+      7521 WARD                 SALESMAN                 7698 81/02/22       1250        500         30                                                                                                 
+      7566 JONES                MANAGER                  7839 81/04/02       2975                    20                                                                                                 
+      7654 MARTIN               SALESMAN                 7698 81/09/28       1250       1400         30                                                                                                 
+      7698 BLAKE                MANAGER                  7839 81/05/01       2850                    30                                                                                                 
+      7782 CLARK                MANAGER                  7839 81/06/09       2450                    10                                                                                                 
+      7788 SCOTT                ANALYST                  7566 87/04/19       3000                    20                                                                                                 
+      7839 KING                 PRESIDENT                     81/11/17       5000                    10                                                                                                 
+      7844 TURNER               SALESMAN                 7698 81/09/08       1500          0         30                                                                                                 
+      7876 ADAMS                CLERK                    7788 87/05/23       1100                    20                                                                                                 
+
+     EMPNO ENAME                JOB                       MGR HIREDATE        SAL       COMM     DEPTNO                                                                                                 
+---------- -------------------- ------------------ ---------- -------- ---------- ---------- ----------                                                                                                 
+      7900 JAMES                CLERK                    7698 81/12/03        950                    30                                                                                                 
+      7902 FORD                 ANALYST                  7566 81/12/03       3000                    20                                                                                                 
+      7934 MILLER               CLERK                    7782 82/01/23       1300                    10                                                                                                 
+
+14 rows selected.
+
+SQL> --10번  부서에 근무하는 사원의 이름, 급여, 입사일, 부서위치를 출력하시오 .
+SQL> ㄷㅇ
+SP2-0042: unknown command "ㄷㅇ" - rest of line ignored.
+SQL> ed
+Wrote file afiedt.buf
+
+  1  select ename ,sal, hiredate, loc
+  2  from emp,dept
+  3  where emp.deptno=dept.deptno 
+  4* and emp.deptno=10
+SQL> /
+
+ENAME                       SAL HIREDATE LOC                                                                                                                                                            
+-------------------- ---------- -------- --------------------------                                                                                                                                     
+CLARK                      2450 81/06/09 NEW YORK                                                                                                                                                       
+KING                       5000 81/11/17 NEW YORK                                                                                                                                                       
+MILLER                     1300 82/01/23 NEW YORK                                                                                                                                                       
+
+SQL> --최대급여를 받는 사원의 입사일, 급여, 사원명을 출력하시오.
+SQL> ed
+Wrote file afiedt.buf
+
+  1  select hiredate, sal, ename, dname
+  2  from emp,dept
+  3  where emp.deptno=dept.deptno 
+  4* and sal=(select max(sal) from emp)
+SQL> /
+
+HIREDATE        SAL ENAME                DNAME                                                                                                                                                          
+-------- ---------- -------------------- ----------------------------                                                                                                                                   
+81/11/17       5000 KING                 ACCOUNTING                                                                                                                                                     
+
+SQL> spool off

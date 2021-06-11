@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    #wrapper{
+        background: url(../image/room.jpg);
+        width: 900px;
+        height: 622px;
+        background-size: 900px 622px;
+        margin: auto;
+        position: relative; /*자식 때문에  포지션 줘야함  자식은 wrapper img*/
+    }
+    #wrapper img{
+        width: 35px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+    
+    }
+    #surface{
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        opacity: 0.8; 
+    }
+    </style>
+
+    <script>
+        var flag=true; 
+     
+    function turnoff(){
+        var op;
+        flag=!flag;
+        if (flag == true);
+        op= 0;
+        path = "resources/image/switch_off.png"; }
+       
+        else {
+            op = 0.8;
+            path = "resources/image/switch_on.png";}
+
+        document.querySelector("#surface").style.opacity=op; 
+        document.querySelector("btn1").src=path; 
+     
+    </script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <div id="surface"></div>
+        <img src="../image/switch_off.png" alt=""onClick="turn off()">
+        <img src="../image/switch_on.png" alt=""onClick="turn on()">
+        
+    </div>
+</body>
+</html>

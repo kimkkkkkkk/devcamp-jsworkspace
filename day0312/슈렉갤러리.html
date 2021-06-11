@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    .wrapper{
+        width: 500px;
+        height: 400px;
+        background-color: yellow;
+        margin: auto;
+        position: relative;
+    }
+    #photo-frame{
+        width: 500px;
+        height: 340px;
+        background-color: tomato;
+        overflow: hidden; /*container에 overflow: hidden주면 너비가 길어서 아무 소용이 없고,  그 위에 width 작은 컨테이너에 hidden을 줘야 소용이 있네요*/
+        position: relative; /*자식인 container 때문에 명시*/
+    }
+    #container{
+        width: 3500px; /*사진 7개니까 합쳐서*/
+        height: 340px;
+        /*앱솔루트로 줄껀데 가운데서 */
+    }
+    #container img{
+        float: left;
+    }
+    #navi{
+        text-align: center;
+        font-size: 30px;
+    }
+    #navi a{
+      text-decoration: none; /*링크 밑줄 없애기*/
+    }
+    #navi a:hover {
+        color: violet;
+    } /* a 는 가짬 명사 상ㅐ, 호버는 마우스가 올라간 상태  pseudo :수도 - 의역 가상태그(태그의 상태 */
+
+    /* #navi a:active{
+        color: tomato;
+    }                   hover, active ,visited 찾아보기!!!  비슷한 역할 */ 
+    #navi a:visited{
+        color: tomato;
+    }
+</style>
+<script>
+    //포지션을 제어하기 위해, 문서 로드와 동시에 container에 absoulte적용 제어!! 그래서 앱솔!
+    var container ; // 모든 함수에서 접근하기 위해
+    var targetX=-3000;
+    var a =0.1; // 비율계수 (이 숫자가 커질수록 걸음이 커진다. 0.1~1 사이로 조절하기 부드럽게)
+    
+    // 컨테이너의 x좌표를 담을 변수 얘라는 변수로 조절 할 것이다
+
+    function init(){    //초기화 함수 
+        container = document.getElementById("container"); // var를꼭 지워야함 안지우면 새로 변수가 지정되는 거기 때문에 ( 위로 전역변수 올리기)
+        container.style.position="absolute"; // 부모를 기준으로 한 위치속성 , 여기서 부모느
+                                                        // photo-frame div이다 , 얘를 여기서 포지션 준 이유가 프로그래밍 하려고 자바스크립트로 준 것이다 얘가 동적으로 움직여야 하기때문에
+        container.style.top=0+"px";
+        container.style.left=0+"px"; // 초기화
+        setInterval("move(0)",10); 
+      
+    }
+    //container 이동시키기
+    function move(){ //0,-500  // move 함수는 계쏙 돌아가고 잇는 상태 감속도 운동으로 미세하게 움직임  첨에 서있던 애가 목표지점에 있던 곳으로 감속도로 이동 너무 가까이 가면 갈곳이 없으니 멈춤 그치만 여전히 심장은 뛰고 있음 얘한테 새로운 목표를 주기만 한다면 
+        // 또 간다 새로운 타겟 지점을 주면 심장이 멈추지 않았기 떄문에 열라게 뛰어감 우리는 그래서 얘가 움직일 타겟을 명시해야한다 바로 타겟x의 값이 된다 href move()에 0을 주는 게 아니라 타겟 엑스를 주면 됨
+        // targetX=x; //매개변수로 올려주자 밑에서 온클릭하고 타겟엑스 주고 일일히 값넣어주는 것이 아니라 변수로 조절하자
+        //  container.style.left=targetX+"px"; // 순간이동
+        // 부드럽게== 감속도
+        //나의위치는 = 현재 나의 위치에서 +비육*(목표지점-현재나의위치)
+         container.style.left = parseInt(container.style.left) + a*(targetX-parseFloat (container.style.left))+"px";
+         //setTimeout("move("+x+")",10); <- 컴퓨터 죽일라는 버튼 무한 루프 클릭한 만큼 생성됨
+    }
+
+    function setTarget(x){
+        targetX=x; // 새로운 목표지점 생성
+    }
+
+    window.addEventListener("load",function(){
+        init();             // 위에 존재하는 함수를 명시해야 불러 올 수 있따
+    });
+
+
+</script>
+</head>
+<body>
+<div class="wrapper">
+    <div id="photo-frame">
+        <!-- 길다란 사진을 모아놓은 컨테이너 -->
+        <div id="container">
+            <img src="../image/shurek/img0.jpg">
+            <img src="../image/shurek/img1.jpg">
+            <img src="../image/shurek/img2.jpg">
+            <img src="../image/shurek/img3.jpg">
+            <img src="../image/shurek/img4.jpg">
+            <img src="../image/shurek/img5.jpg">
+            <img src="../image/shurek/img6.jpg">
+        </div>
+    </div>
+    <div id="navi">
+        <!-- html문서내에서 자바스크립트를 작성할 수 있는 영역은?
+        1)script 태그 안에
+        2)온클릭 온로드 같은 이벤트 핸들러 안
+        3)a href 안에도 가능하다 (단 javascript: 명시) -->
+        <a href="javascript:setTarget(0);">●</a> <!--원래 전은 이거 였음  javascript:move(0)-->
+        <a href="javascript:setTarget(-500);">●</a>
+        <a href="javascript:setTarget(-1000);">●</a>
+        <a href="javascript:setTarget(-1500);">●</a>
+        <a href="javascript:setTarget(-2000);">●</a> <!-- 원이 파란색인 이유는 링크 걸어놔서 스타일시트로  얼마든지 바꾸기 가능-->
+        <a href="javascript:setTarget(-2500);">●</a>
+        <a href="javascript:setTarget(-3000);">●</a>
+        </div>
+    </div>
+</body>
+</html>
